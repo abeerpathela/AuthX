@@ -1,35 +1,52 @@
-import { createContext, useState} from "react";
+import { createContext, useState, useEffect } from "react";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-
-
+import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
-export const AppContextProvider = (props)=>{
-    const backendUrl=import.meta.env.VITE_BACKEND_URL;
-    const [isLoggedIn,setIsLoggedIn]=useState(false);
-    const [userData,setUserData]=useState('');
+export const AppContextProvider = (props) => {
 
-    const getUserData = async ()=>{
-        try{
-            const {data} = await axios.get(backendUrl+'api/user/data');
-            data.success ? setUserData(data.userData) : toast.error(data.message)
-        }
-        catch(err){
-            toast.error(err.message);
-        }
-    }
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    const value={
-        backendUrl,
-        isLoggedIn,setIsLoggedIn,
-        userData,setUserData,
-        getUserData
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState('');
+
+  const getUserData = async () => {
+    try {
+      const { data } = await axios.get(
+        backendUrl + "/api/user/data",
+        { withCredentials: true }
+      );
+
+      if (data.success) {
+        setUserData(data.userData);
+        setIsLoggedIn(true);
+      } else {
+        toast.error(data.message);
+      }
+
+    } catch (err) {
+      setIsLoggedIn(false);
     }
-    return (
-        <AppContext.Provider value={value}>
-            {props.children}
-        </AppContext.Provider>
-    )
-}
+  };
+
+  // ✅ Hook inside component
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  const value = {
+    backendUrl,
+    isLoggedIn,
+    setIsLoggedIn,
+    userData,
+    setUserData,
+    getUserData
+  };
+
+  return (
+    <AppContext.Provider value={value}>
+      {props.children}
+    </AppContext.Provider>
+  );
+};

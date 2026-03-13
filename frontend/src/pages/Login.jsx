@@ -5,6 +5,7 @@ import { AppContext } from "../context/AppContext";
 import { ToastContainer,toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 
 

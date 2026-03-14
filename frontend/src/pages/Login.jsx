@@ -54,7 +54,7 @@ function Login() {
 
       {/* Logo */}
       <div className="p-4">
-        <img src={logo} alt="logo" className="h-30" onClick={()=> navigate(-1)} />
+        <img src={logo} alt="logo" className="h-17 w-40 rounded-full border-2 bg-white" onClick={()=> navigate(-1)} />
       </div>
 
       {/* Form Container */}

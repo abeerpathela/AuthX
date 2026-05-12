@@ -1,12 +1,21 @@
-import nodemailer from 'nodemailer';
+import emailjs from '@emailjs/nodejs';
 
-const transporter= nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',
-    port: 587,
-    auth:{
-        user:process.env.SMTP_USER,
-        pass:process.env.SMTP_PASS
-    }
-});
+export const sendEmailJS = async (templateParams) => {
+  try {
+    const response = await emailjs.send(
+      process.env.EmailJS_ServiceId,
+      process.env.EmailJS_TemplateId,
+      templateParams,
+      {
+        publicKey: process.env.EmailJS_APIKey,
+        privateKey: process.env.EmailJS_APISecret
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error('EmailJS error:', error);
+    throw error;
+  }
+};
 
-export default transporter;
+export default sendEmailJS;

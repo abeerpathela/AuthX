@@ -1,7 +1,6 @@
 import express from 'express';
 import { isAuthenticated, logout, resetUserPassword, sendResetOtp, sendVerifyOtp, signIn, signUp, verifyEmail } from '../controllers/authController.js';
 import userAuth from '../middlewares/userAuth.js';
-import { send } from 'vite';
 
 const authRouter = express.Router();
 
